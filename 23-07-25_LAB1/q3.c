@@ -70,20 +70,20 @@ int main(){
     scanf("%d", &n);
     struct Student* stud[n];
     int choice = 0, i = 0;
+    printf("0. Quit\n1. Store student data\n2. Display student data\n");
+    printf("3. Display male and female categories separately\n");
+    printf("4. Display student data along with %% mark sorted in %% mark\n");
+    printf("5. Display the student date having a mobile number ending with 042\n");
+    printf("6. Display the highest and lowest mark in any subject as per the user's wish\n");
     do {
-        printf("0. Quit\n1. Store student data\n2. Display student data\n");
-        printf("3. Display male and female categories separately\n");
-        printf("4. Display student data along with %% mark sorted in %% mark\n");
-        printf("5. Display the student date having a mobile number ending with 042\n");
-        printf("6. Display the highest and lowest mark in any subject as per the user's wish\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch( choice ){
             case 0: /*Silence is golden*/ break;
             case 1: {
-                if( i > n ){
-                    printf("Student capacity exceeded.");
+                if( i >= n ){
+                    printf("Student capacity exceeded.\n");
                     break;
                 }
                 stud[i] = input(i);
