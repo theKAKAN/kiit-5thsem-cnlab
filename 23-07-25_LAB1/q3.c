@@ -46,7 +46,7 @@ void display(struct Student** stud, int n){
 }
 
 // M for male, F for female
-void display_by_gender(struct Student** stud, int n, char gender){
+void displayByGender(struct Student** stud, int n, char gender){
     printf("\nPrinting stud info for gender %c: \n", gender);
     printf("\tSno.\tRoll\tName\tGender\tD. O. B.\tMobile\tPhy\tChem\tMath\n");
     for( int i = 0; i < n; i++ ){
@@ -62,6 +62,94 @@ void display_by_gender(struct Student** stud, int n, char gender){
                 temp->mobile,
                 temp->phy, temp->chem, temp->math );
     }
+}
+
+// Function to swap two students
+void swap(struct Student **a, struct Student **b) {
+    struct Student *temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Function to sort the array of students based on the sum of marks
+void sortByMarksSum(struct Student* arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            int sum1 = arr[j]->phy + arr[j]->chem + arr[j]->math;
+            int sum2 = arr[j + 1]->phy + arr[j + 1]->chem + arr[j + 1]->math;
+            if (sum1 < sum2) {
+                swap(&arr[j], &arr[j + 1]);
+            }
+        }
+    }
+}
+
+// Display number ending in 042
+void displayEnding042(struct Student** stud, int n){
+    printf("\nPrinting stud info: \n");
+    printf("\tSno.\tRoll\tName\tGender\tD. O. B.\tMobile\tPhy\tChem\tMath\n");
+    for( int i = 0; i < n; i++ ){
+        struct Student* temp = stud[i];
+        // Check if number ends in 042
+        if( temp->mobile % 1000 != 42 )
+            continue;
+        
+        printf("\t%03d\t%d\t%s\t%c\t%2d/%02d/%2d\t%ld\t%d\t%d\t%d\n", 
+                temp->sno, temp->roll, 
+                temp->name, temp->gender, 
+                temp->dob.day, temp->dob.month, temp->dob.year,
+                temp->mobile,
+                temp->phy, temp->chem, temp->math );
+    }
+}
+
+// Function to find the highest and lowest marks in a chosen subject
+void findHighestAndLowestMarks(struct Student* students[], int n, int subjectChoice) {
+    int highestMark = 0;
+    int lowestMark = 100;
+    int currentSubjectMark;
+
+    switch (subjectChoice) {
+        case 1:
+            for (int i = 0; i < n; i++) {
+                currentSubjectMark = students[i]->phy;
+                if (currentSubjectMark > highestMark) {
+                    highestMark = currentSubjectMark;
+                }
+                if (currentSubjectMark < lowestMark) {
+                    lowestMark = currentSubjectMark;
+                }
+            }
+            break;
+        case 2:
+            for (int i = 0; i < n; i++) {
+                currentSubjectMark = students[i]->chem;
+                if (currentSubjectMark > highestMark) {
+                    highestMark = currentSubjectMark;
+                }
+                if (currentSubjectMark < lowestMark) {
+                    lowestMark = currentSubjectMark;
+                }
+            }
+            break;
+        case 3:
+            for (int i = 0; i < n; i++) {
+                currentSubjectMark = students[i]->math;
+                if (currentSubjectMark > highestMark) {
+                    highestMark = currentSubjectMark;
+                }
+                if (currentSubjectMark < lowestMark) {
+                    lowestMark = currentSubjectMark;
+                }
+            }
+            break;
+        default:
+            printf("Invalid subject choice.\n");
+            return;
+    }
+
+    printf("\nHighest Mark in the chosen subject: %d\n", highestMark);
+    printf("Lowest Mark in the chosen subject: %d\n", lowestMark);
 }
 
 int main(){
@@ -94,20 +182,29 @@ int main(){
                 display( stud, n ); 
                 break;
             case 3: 
-                display_by_gender( stud, n, 'M' );
-                display_by_gender( stud, n, 'F' );
+                displayByGender( stud, n, 'M' );
+                displayByGender( stud, n, 'F' );
                 break;
             case 4:
+                sortByMarksSum( stud, n );
+                display( stud, n );
                 break;
             case 5:
+                displayEnding042( stud, n );
                 break;
-            case 6:
+            case 6: {
+                int subjectChoice;
+                printf("\nEnter the subject to find highest and lowest marks:\n");
+                printf("1. Physics\n2. Chemistry\n3. Mathematics\n");
+                scanf("%d", &subjectChoice);
+                findHighestAndLowestMarks(stud, n, subjectChoice);
                 break;
+            }
             default: 
                 printf("Wrong input\n"); 
                 break;
         }
     } while( choice != 0 );
-
     
+    return 0;
 }
