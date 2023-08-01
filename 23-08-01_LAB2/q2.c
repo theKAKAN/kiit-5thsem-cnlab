@@ -1,3 +1,5 @@
+// WAP to extract each byte of a given number and store them in a variable and 
+// display it
 #include <stdio.h>
 #include <stdlib.h>
 

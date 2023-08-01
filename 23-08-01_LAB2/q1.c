@@ -1,4 +1,5 @@
-#include <limits.h>
+// WAP to extract the first byte and last byte of an unsigned integer
+// using command line arguments
 #include <stdio.h>
 #include <stdlib.h>
 
