@@ -1,0 +1,3 @@
+1. Write a program where the client will send a number and the server will check whether its armstrong number or not
+2. Write a program to send any two numbers from client and perform all arithmetic operations on them in server.
+3. Write a program to send your name from client and find the number of vowels in it.
