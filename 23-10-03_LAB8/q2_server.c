@@ -1,7 +1,5 @@
-// Write a program where two clients send a number each, server calculates the
-// product and returns it to client 1
-
-
+// Write a program where two clients chat with each other through the server
+// using TCP
 // Server
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +8,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-#define PORT 8081
+#define PORT 8080
 
 int main() {
     int server_socket, client1, client2;
@@ -50,29 +48,21 @@ int main() {
     client2 = accept( server_socket, (struct sockaddr*)&client2_addr, &addr_size2);
     printf("Client 2 connected\n");
 
-    double num1 = 0, num2 = 0;
-    // Read data from the client1
-    recv(client1, buffer, sizeof(buffer), 0);
-    sscanf(buffer, "%lf", &num1);
-    // Read data from client2
-    recv(client2, buffer2, sizeof(buffer2), 0);
-    sscanf(buffer2, "%lf", &num2);
-
-    // Add the numbers
-    double product = num1*num2;
-
-    // Print
-    printf("Request received: %lf and %lf.\n", num1, num2);
-
-    // Prepare the response
-    char response[1024];
-    snprintf(response, sizeof(response), "Product: %.2lf\n", product);
-
-    // Send response back to the client
-    send(client1, response, strlen(response), 0);
-
-    // Print
-    printf("Response sent: %s", response);
+    int from = 0;
+    while(1){
+        if( from == 0 ){
+            recv(client1, buffer, sizeof(buffer), 0);
+            printf("Client 1 sent: %s\n", buffer);
+            send(client2, buffer, sizeof(buffer), 0);
+            from = 1;
+        }
+        else if( from == 1 ){
+            recv(client2, buffer, sizeof(buffer), 0);
+            printf("Client 1 sent: %s\n", buffer);
+            send(client1, buffer, sizeof(buffer), 0);
+            from = 0;
+        }
+    }
 
     close(client1);
     close(client2);
